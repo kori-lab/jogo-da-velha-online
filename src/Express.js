@@ -39,8 +39,7 @@ module.exports = () => {
 
     socket.on("invite", (targetID, author) => {
       const target = users_connecteds.find((user) => user.userID === targetID);
-      io.to(target.socket_id).emit("receive-invite", userID, author);
-      io.emit("receive-invite", targetID, author);
+      if (target?.socket_id) io.to(target?.socket_id).emit("receive-invite", userID, author);
     });
   }); 
 
