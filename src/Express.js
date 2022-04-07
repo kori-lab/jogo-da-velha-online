@@ -42,9 +42,9 @@ module.exports = () => {
       io.to(target.socket_id).emit("receive-invite", userID, author);
       io.emit("receive-invite", targetID, author);
     });
-  });
+  }); 
 
-  server.listen(process.env?.port || 3000, () => {
+  server.listen(process.env.PORT || 443, () => {
     console.log("listening on http://localhost:80");
   });
 };
