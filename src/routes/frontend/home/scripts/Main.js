@@ -30,10 +30,10 @@ socket.on("getIP", async () => {
 
 socket.on("receive-invite", (invite, author) => {
   console.log(invite, author, socket.userID);
-  if (socket.userID === invite && socket.userID !== author) {
-    const elementInvite = document.createElement("div");
-    elementInvite.classList.add("center");
-    elementInvite.innerHTML = `
+  
+  const elementInvite = document.createElement("div");
+  elementInvite.classList.add("center");
+  elementInvite.innerHTML = `
     <div class="invite-header">
       <div class="invite-header-title">
         <i class="bx bxs-user"></i>
@@ -59,9 +59,8 @@ socket.on("receive-invite", (invite, author) => {
       </div>
     </div>
   `;
-    document.querySelector("#receive-invite").appendChild(elementInvite);
-    document.querySelector("#receive-invite").style.display = "block";
-  }
+  document.querySelector("#receive-invite").appendChild(elementInvite);
+  document.querySelector("#receive-invite").style.display = "block";
 });
 
 document.querySelector("#inviter-button").addEventListener("click", () => {

@@ -31,6 +31,7 @@ module.exports = () => {
       --connectedUsers;
       io.emit("userLeaved", connectedUsers);
       console.log(`user disconnected ${socket.ip}`);
+      
       users_connecteds.splice(
         users_connecteds.findIndex((user) => user.socket_id === socket.id),
         1
@@ -38,10 +39,14 @@ module.exports = () => {
     });
 
     socket.on("invite", (targetID, author) => {
-      const target = users_connecteds.find((user) => user.userID === targetID);
+      if (targetID === author) {
+        socket.emit("inviteError", "You can't invite yourself");
+      } else {
+        const target = users_connecteds.find((user) => user.userID == targetID);
 
-      if (target?.socket_id && !target?.socket_id == socket.id) {
-        io.to(target?.socket_id).emit("receive-invite", userID, author);
+        if (target?.socket_id) {
+          io.to(target?.socket_id).emit("receive-invite", userID, author);
+        }
       }
     });
   });
