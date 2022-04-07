@@ -39,9 +39,12 @@ module.exports = () => {
 
     socket.on("invite", (targetID, author) => {
       const target = users_connecteds.find((user) => user.userID === targetID);
-      if (target?.socket_id) io.to(target?.socket_id).emit("receive-invite", userID, author);
+
+      if (target?.socket_id && !target?.socket_id == socket.id) {
+        io.to(target?.socket_id).emit("receive-invite", userID, author);
+      }
     });
-  }); 
+  });
 
   server.listen(process.env.PORT || 443, () => {
     console.log("listening on http://localhost:80");
