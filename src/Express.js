@@ -44,7 +44,7 @@ module.exports = () => {
     });
   });
 
-  server.listen(80, () => {
+  server.listen(process.env?.port || 3000, () => {
     console.log("listening on http://localhost:80");
   });
 };
