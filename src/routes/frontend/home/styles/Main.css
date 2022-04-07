@@ -1,0 +1,125 @@
+.default-button {
+  box-shadow: #00000084 0 0 10px 0px;
+  text-align: center;
+  min-height: 2em;
+  min-width: 6.7em;
+  color: rgb(232, 232, 232);
+  border-radius: 0.3em;
+  background-color: #2d2d2d;
+  border: #c5c5c54f 1px solid;
+  transition: all 0.2s ease-in-out;
+}
+
+.default-button:hover {
+  box-shadow: #0000008e 0 0 15px 0px;
+  border: #c5c5c576 1px solid;
+}
+
+.default-button:active {
+  border: #443c63 1px solid;
+  background-color: #363636;
+}
+
+.image {
+  border-radius: 3px;
+  display: block;
+  width: 100%;
+  height: inherit;
+  object-fit: cover;
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--background-color);
+  color: rgb(232, 232, 232);
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.header {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  width: 260px;
+  background-image: linear-gradient(
+    to right,
+    rgba(38, 38, 38, 0.433),
+    rgba(38, 38, 38, 0.407)
+  );
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.661);
+  font-size: large;
+  color: rgb(232, 232, 232);
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  background-color: rgb(26, 24, 24);
+}
+
+main {
+  animation: scroll 300s linear infinite;
+  background: url("https://media.discordapp.net/attachments/860826236468330507/937804691239215224/4bcfc5772916a7155768afd5eb74913c_1.png"),
+    #111111;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes scroll {
+  100% {
+    background-position: -3000px -3000px;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  wrapper {
+    animation: scroll 200s linear infinite;
+  }
+}
+
+@media (min-width: 670px) {
+  .title {
+    font-size: 5rem;
+  }
+}
+
+i {
+  color: rgba(0, 0, 0, 0);
+  font-size: x-large;
+  position: relative;
+  top: 0.19em;
+  margin-right: 0.1em;
+  margin-left: 0.1em;
+}
+
+#user-id > span {
+  color: #686868;
+}

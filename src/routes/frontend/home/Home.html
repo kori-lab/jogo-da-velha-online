@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="jogo da velha online sem virus" />
+    <meta
+      name="keywords"
+      content="jogo da velha, jogo da velha online, jogo da velha online sem virus"
+    />
+    <meta name="author" content="Kori" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Portuguese" />
+
+    <link
+      rel="shortcut icon"
+      href="https://emoji.gg/assets/emoji/illyapokerface.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/home/styles/main.css" />
+    <link rel="stylesheet" type="text/css" href="/home/styles/utils/Ids.css" />
+
+    <title>Jogo da velha</title>
+  </head>
+  <body>
+    <main>
+      <header class="header">
+        <div>
+          <p id="user-id">User id: <span>000000</span></p>
+        </div>
+        <div class="pad-online-info">
+          <p id="onlineInfo">conectando-se...</p>
+        </div>
+        <div>
+          <button class="default-button" id="inviter-button">
+            Convidar alguém
+          </button>
+        </div>
+      </header>
+      <main id="invite-page">
+        <form id="form-invite">
+          <input
+            class="center"
+            name="text"
+            type="text"
+            id="user-id"
+            placeholder="Digite o id do usuario."
+            autocomplete="off"
+          />
+          <button class="close-invite">X</button>
+        </form>
+      </main>
+      <main id="receive-invite"></main>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/home/scripts/main.js"></script>
+  </body>
+</html>
