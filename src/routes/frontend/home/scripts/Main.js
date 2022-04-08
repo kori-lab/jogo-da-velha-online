@@ -36,37 +36,30 @@ socket.on("receive-invite", (invite, author) => {
   elementInvite.innerHTML = `
     <div class="invite-header">
       <div class="invite-header-title">
-        <i class="bx bxs-user"></i>
-        <span>${author}</span>  
-      </div>  
-      <div class="invite-header-close"> 
-        <i class="bx bx-x"></i>
-      </div>
-    </div>
-    <div class="invite-body">
+      <i class='bx bxs-user' style='color:#494949' ></i>
+        Convite de jogo
+      </div> 
       <div class="invite-body-text">
-        <p>Você tem um novo pedido de <span>${author}</span>, deseja jogar contra esse pobre?</p>
+        <p>Você tem um pedido de <span style='color:#494949;font-weight: bold;'>${author}</span>, deseja duelar contra ele(a)?</p>
       </div>
-      <div class="invite-body-buttons"> 
-        <button id="accept-invite" class="btn btn-primary">
-          <i class="bx bx-user"></i>
-          <span>Aceitar</span>
-        </button>
-        <button id="recuse-invite" class="btn btn-danger">
-          <i class="bx bx-x"></i>
-          <span>Recusar</span>  
-        </button>
-      </div>
+      <button id="accept-invite">
+        Aceitar
+      </button>
+      <button id="recuse-invite">
+        Recusar
+      </button>
     </div>
   `;
 
   document.querySelector("#receive-invite").appendChild(elementInvite);
   document.querySelector("#accept-invite").addEventListener("click", () => {
     socket.emit("accept-invite", invite, socket.userID);
+    document.querySelector("#receive-invite").style.display = "none";
     elementInvite.remove();
   });
   document.querySelector("#recuse-invite").addEventListener("click", () => {
     socket.emit("recuse-invite", invite, socket.userID);
+    document.querySelector("#receive-invite").style.display = "none";
     elementInvite.remove();
   });
   document.querySelector("#receive-invite").style.display = "block";
@@ -117,9 +110,21 @@ socket.on("update-battle", (battle) => {
   }
 });
 
+socket.on("end-battle", (battle_result) => {
+  if (battle_result.winner == socket.userID) {
+    document.querySelector("#info-battle").innerHTML = "Você venceu!";
+  } else if (battle_result.winner == "draw") {
+    document.querySelector("#info-battle").innerHTML = "Empate!";
+  } else {
+    document.querySelector("#info-battle").innerHTML = "Você perdeu!";
+  }
+
+  renderizeArena(battle_result);
+});
+
 function renderizeArena(battle, player) {
   console.log("renderizando arena", battle, player);
-  
+
   const arena_element = document.querySelector("#arena");
   arena_element.innerHTML = "";
 

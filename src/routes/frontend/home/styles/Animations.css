@@ -1,0 +1,17 @@
+@keyframes scroll {
+  100% {
+    background-position: -3000px -3000px;
+  }
+}
+
+@media (prefers-reduced-motion) {
+  wrapper {
+    animation: scroll 200s linear infinite;
+  }
+}
+
+@media (min-width: 670px) {
+  .title {
+    font-size: 5rem;
+  }
+}

@@ -21,12 +21,18 @@
       href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
     />
     <link rel="stylesheet" type="text/css" href="/home/styles/Main.css" />
+    <link rel="stylesheet" type="text/css" href="/home/styles/Animations.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/home/styles/utils/Class.css"
+    />
     <link rel="stylesheet" type="text/css" href="/home/styles/utils/Ids.css" />
 
     <title>Jogo da velha</title>
   </head>
   <body>
-    <main>
+    <main class="background-main">
       <header class="header">
         <div>
           <p id="user-id">User id: <span>000000</span></p>
@@ -41,7 +47,10 @@
         </div>
       </header>
       <main id="invite-page">
+        <main class="layer-opacity"></main>
+        <button class="close-invite">&#10005;</button>
         <form id="form-invite">
+          <label for="text">convide seu amigo:</label>
           <input
             class="center"
             name="text"
@@ -49,15 +58,17 @@
             id="user-id"
             placeholder="Digite o id do usuario."
             autocomplete="off"
+            minlength="6"
+            maxlength="6"
           />
-          <button class="close-invite">X</button>
         </form>
       </main>
-      <main id="receive-invite"></main>
+      <main id="receive-invite"><main class="layer-opacity"></main></main>
       <main id="battle-arena">
-        <header id="info-battle"></header>
+        <main class="layer-opacity"></main>
+        <p id="info-battle">sexo</p>
         <div id="turn"></div>
-        <div class="center" id="arena">
+        <div class="center arena">
           <div class="arena-row" id="row0">
             <button id="arena-cell-0-0"></button>
             <button id="arena-cell-0-1"></button>
@@ -69,7 +80,7 @@
             <button id="arena-cell-1-2"></button>
           </div>
           <div class="arena-row" id="row2">
-            <button id="arena-cell-2-0"></button>
+            <button id="arena-cell-2-0">X</button>
             <button id="arena-cell-2-1"></button>
             <button id="arena-cell-2-2"></button>
           </div>

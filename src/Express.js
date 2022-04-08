@@ -92,28 +92,41 @@ module.exports = () => {
       );
 
       if (battle) {
-        const winner = checkWinner(battle);
+        var index_battle = active_matches.findIndex(
+          (battle) =>
+            battle.author.user_id == request_battle.author.user_id &&
+            battle.player.user_id == request_battle.player.user_id
+        );
+        active_matches[index_battle].turn =
+          battle.turn == battle.author.user_id
+            ? battle.player.user_id
+            : battle.author.user_id;
+        active_matches[index_battle].arena = request_battle.arena;
 
-        if (winner) {
-          io.to(battle.player1.socket_id).emit("end-battle", winner);
-          io.to(battle.player2.socket_id).emit("end-battle", winner);
+        const info_win = checkWinner(active_matches[index_battle]);
+
+        if (info_win.winner) {
+          const winner =
+            info_win.winner == "draw"
+              ? "draw"
+              : battle.player.part == info_win.winner
+              ? battle.player.user_id
+              : battle.author.user_id;
+
+          io.to(battle.player.socket_id).emit("end-battle", {
+            arena: battle.arena,
+            winner,
+          });
+          io.to(battle.author.socket_id).emit("end-battle", {
+            arena: battle.arena,
+            winner,
+          });
 
           active_matches.splice(
             active_matches.findIndex((battle) => battle.id === battle.id),
             1
           );
-        } else if (!winner) {
-          var index_battle = active_matches.findIndex(
-            (battle) =>
-              battle.author.user_id == request_battle.author.user_id &&
-              battle.player.user_id == request_battle.player.user_id
-          );
-          active_matches[index_battle].turn =
-            battle.turn == battle.author.user_id
-              ? battle.player.user_id
-              : battle.author.user_id;
-          active_matches[index_battle].arena = request_battle.arena;
-
+        } else if (!info_win) {
           io.to(battle.player.socket_id).emit(
             "update-battle",
             active_matches[index_battle]
@@ -179,6 +192,57 @@ function initBattle(author, target) {
   };
 }
 
-function checkWinner() {
-  return null;
+function checkWinner(battle) {
+  for (const part of ["X", "O"]) {
+    if (
+      columVerify(battle.arena, part) ||
+      rowVerify(battle.arena, part) ||
+      diagonalVerify(battle.arena, part)
+    )
+      return {
+        winner: part,
+      };
+    else if (
+      battle.arena
+        .map((row) =>
+          [...row.map((space) => (space == "" ? 0 : 1))].reduce(
+            (partialSum, a) => partialSum + a,
+            0
+          )
+        )
+        .reduce((partialSum, a) => partialSum + a, 0) == 9
+    )
+      return { winner: "draw" };
+    else return false;
+  }
+}
+
+function columVerify(table, part) {
+  let i = 0;
+  while (i < table[0].length) {
+    if (table[0][i] == part && table[1][i] == part && table[2][i] == part) {
+      return true;
+    }
+    ++i;
+  }
+}
+
+function rowVerify(table, part) {
+  let i = 0;
+  while (i < table[0].length) {
+    if (table[i][0] == part && table[i][1] == part && table[i][2] == part) {
+      return true;
+    }
+    ++i;
+  }
+}
+
+function diagonalVerify(table, part) {
+  if (table[0][2] == part && table[1][1] == part && table[2][0] == part) {
+    return true;
+  }
+
+  if (table[0][0] == part && table[1][1] == part && table[2][2] == part) {
+    return true;
+  }
 }
