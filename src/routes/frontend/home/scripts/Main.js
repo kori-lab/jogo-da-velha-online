@@ -88,35 +88,41 @@ socket.on("start-battle", (battle) => {
   document.querySelector("#invite-page").style.display = "none";
 
   if (battle.turn == socket.userID) {
-    document.querySelector("#info-battle").innerHTML = "sua vez";
+    document.querySelector("#info-battle > p").innerHTML = "sua vez...";
     var part = battle.player.user_id == socket.userID ? "O" : "X";
 
     renderizeArena(battle, part);
   } else {
-    document.querySelector("#info-battle").innerHTML = "turno do adversário";
+    document.querySelector("#info-battle > p").innerHTML =
+      "turno do adversário...";
     renderizeArena(battle);
   }
 });
 
 socket.on("update-battle", (battle) => {
   if (battle.turn == socket.userID) {
-    document.querySelector("#info-battle").innerHTML = "sua vez";
+    document.querySelector("#info-battle > p").innerHTML = "sua vez...";
     var part = battle.player.user_id == socket.userID ? "O" : "X";
 
     renderizeArena(battle, part);
   } else {
-    document.querySelector("#info-battle").innerHTML = "turno do adversário";
+    document.querySelector("#info-battle > p").innerHTML =
+      "turno do adversário...";
     renderizeArena(battle);
   }
 });
 
-socket.on("end-battle", (battle_result) => {
+socket.on("end-battle", async (battle_result) => {
   if (battle_result.winner == socket.userID) {
-    document.querySelector("#info-battle").innerHTML = "Você venceu!";
+    document.querySelector("#info-battle > p").innerHTML = "Você venceu 🎉";
+    document.querySelector("#confetti").style.display = "block";
+    startConfetti();
+    await new Promise((r) => setTimeout(r, 6000));
+    toggleConfetti();
   } else if (battle_result.winner == "draw") {
-    document.querySelector("#info-battle").innerHTML = "Empate!";
+    document.querySelector("#info-battle > p").innerHTML = "Empate 🤝";
   } else {
-    document.querySelector("#info-battle").innerHTML = "Você perdeu!";
+    document.querySelector("#info-battle > p").innerHTML = "Você perdeu 😢";
   }
 
   renderizeArena(battle_result);
