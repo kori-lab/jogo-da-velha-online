@@ -213,7 +213,6 @@ function checkWinner(battle) {
         .reduce((partialSum, a) => partialSum + a, 0) == 9
     )
       return { winner: "draw" };
-    else return false;
   }
 }
 
