@@ -1,7 +1,15 @@
 #invite-page {
-	display: none;
+  display: none;
 }
 
 #receive-invite {
-	display: none;
+  display: none;
+}
+
+#battle-arena {
+  display: none;
+}
+
+#user-id > span {
+  color: #686868;
 }

@@ -30,7 +30,7 @@ socket.on("getIP", async () => {
 
 socket.on("receive-invite", (invite, author) => {
   console.log(invite, author, socket.userID);
-  
+
   const elementInvite = document.createElement("div");
   elementInvite.classList.add("center");
   elementInvite.innerHTML = `
@@ -48,18 +48,27 @@ socket.on("receive-invite", (invite, author) => {
         <p>Você tem um novo pedido de <span>${author}</span>, deseja jogar contra esse pobre?</p>
       </div>
       <div class="invite-body-buttons"> 
-        <button class="btn btn-primary">
+        <button id="accept-invite" class="btn btn-primary">
           <i class="bx bx-user"></i>
           <span>Aceitar</span>
         </button>
-        <button class="btn btn-danger">
+        <button id="recuse-invite" class="btn btn-danger">
           <i class="bx bx-x"></i>
           <span>Recusar</span>  
         </button>
       </div>
     </div>
   `;
+
   document.querySelector("#receive-invite").appendChild(elementInvite);
+  document.querySelector("#accept-invite").addEventListener("click", () => {
+    socket.emit("accept-invite", invite, socket.userID);
+    elementInvite.remove();
+  });
+  document.querySelector("#recuse-invite").addEventListener("click", () => {
+    socket.emit("recuse-invite", invite, socket.userID);
+    elementInvite.remove();
+  });
   document.querySelector("#receive-invite").style.display = "block";
 });
 
@@ -79,3 +88,97 @@ document.querySelector("#inviter-button").addEventListener("click", () => {
     document.querySelector("#invite-page").style.display = "none";
   });
 });
+
+socket.on("start-battle", (battle) => {
+  document.querySelector("#battle-arena").style.display = "block";
+  document.querySelector("#receive-invite").style.display = "none";
+  document.querySelector("#invite-page").style.display = "none";
+
+  if (battle.turn == socket.userID) {
+    document.querySelector("#info-battle").innerHTML = "sua vez";
+    var part = battle.player.user_id == socket.userID ? "O" : "X";
+
+    renderizeArena(battle, part);
+  } else {
+    document.querySelector("#info-battle").innerHTML = "turno do adversário";
+    renderizeArena(battle);
+  }
+});
+
+socket.on("update-battle", (battle) => {
+  if (battle.turn == socket.userID) {
+    document.querySelector("#info-battle").innerHTML = "sua vez";
+    var part = battle.player.user_id == socket.userID ? "O" : "X";
+
+    renderizeArena(battle, part);
+  } else {
+    document.querySelector("#info-battle").innerHTML = "turno do adversário";
+    renderizeArena(battle);
+  }
+});
+
+function renderizeArena(battle, player) {
+  console.log("renderizando arena", battle, player);
+  
+  const arena_element = document.querySelector("#arena");
+  arena_element.innerHTML = "";
+
+  var index_row = 0;
+  for (const row of battle.arena) {
+    const row_element = document.createElement("div");
+    row_element.classList.add("arena-row");
+    row_element.id = `row${index_row}`;
+
+    var index_cell = 0;
+    for (const button of row) {
+      const button_element = document.createElement("button");
+      button_element.id = `arena-cell-${index_row}-${index_cell}`;
+      button_element.innerHTML = button;
+      button_element.classList.add("arena-cell");
+
+      if (button == "" && player) {
+        /**
+         * @param {MouseEvent} elem
+         */
+        button_element.addEventListener("click", (elem) => {
+          console.log(
+            button,
+            player,
+            button_element.id[button_element.id.length - 1],
+            row_element.id[row_element.id.length - 1]
+          );
+
+          elem.target.innerHTML = player;
+
+          var arena = showTable();
+          battle.arena = arena;
+
+          socket.emit("click-cell", battle);
+        });
+      }
+
+      row_element.appendChild(button_element);
+
+      ++index_cell;
+    }
+
+    ++index_row;
+    arena_element.appendChild(row_element);
+  }
+}
+
+function showTable() {
+  const table = [];
+  for (const row of document
+    .getElementById("arena")
+    .querySelectorAll(".arena-row")) {
+    const line = [];
+    for (const button of document
+      .getElementById(row.id)
+      .querySelectorAll("button")) {
+      line.push(button.textContent);
+    }
+    table.push(line);
+  }
+  return table;
+}
