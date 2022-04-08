@@ -105,7 +105,16 @@ module.exports = () => {
 
         const info_win = checkWinner(active_matches[index_battle]);
 
-        if (info_win.winner) {
+        if (!info_win) {
+          io.to(battle.player.socket_id).emit(
+            "update-battle",
+            active_matches[index_battle]
+          );
+          io.to(battle.author.socket_id).emit(
+            "update-battle",
+            active_matches[index_battle]
+          );
+        } else if (info_win.winner) {
           const winner =
             info_win.winner == "draw"
               ? "draw"
@@ -125,15 +134,6 @@ module.exports = () => {
           active_matches.splice(
             active_matches.findIndex((battle) => battle.id === battle.id),
             1
-          );
-        } else if (!info_win) {
-          io.to(battle.player.socket_id).emit(
-            "update-battle",
-            active_matches[index_battle]
-          );
-          io.to(battle.author.socket_id).emit(
-            "update-battle",
-            active_matches[index_battle]
           );
         }
       }
